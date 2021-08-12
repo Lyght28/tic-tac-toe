@@ -64,14 +64,16 @@ class Interface {
   void printResult(Board board) {
     //TODO change this print system to show whether this interface player has win or not
     switch (board.checkBoard()) {
-      case 0:
-        print("It's a draw?");
-        break;
       case 1:
         print('GG, the X player win.');
         break;
       case 2:
         print('GG, the O player win.');
+        break;
+      case -1:
+      default:
+        print("It's a draw.");
+        break;
     }
   }
 

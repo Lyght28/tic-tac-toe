@@ -9,15 +9,20 @@ class Board {
   //generate an empty board
   static List<List<int>> generateBoard([int size = 3]) => List.generate(size, (i) => List.generate(size, (j) => 0));
 
+  bool caseIsEmpty(int row, int column) => board[row][column] == 0 ? true : false;
+
 
   //@param gameBoard
   //@return 1 if the winner is X
   //        2 if the winner is O
+  //        -1 if it's a draw
   //        0 in the other statements
   int checkRowsColums() {
+    int nbMoves = 0;
     for (int i = 0; i < board.length; i++) {
       int lastRow = 0, countRow = 0, lastColumn = 0, countColumn = 0;
       for (int j = 0; j < board.length; j++) {
+        nbMoves += caseIsEmpty(i, j) ? 0 : 1;
         countRow += lastRow == board[i][j] && lastRow != 0 ? 1 : 0;
         lastRow = board[i][j];
         countColumn += lastColumn == board[j][i] && lastColumn != 0 ? 1 : 0;
@@ -28,7 +33,7 @@ class Board {
        else if (countColumn >= board.length - 1)
          return board[0][i];
     }
-    return 0;
+    return nbMoves >= 8 ? -1 : 0;
   }
 
   int checkDiagonals() {
@@ -51,10 +56,11 @@ class Board {
 
   int checkBoard() {
     int diagonal = checkDiagonals(), rowColumn = checkRowsColums();
-    return rowColumn != 0 ? rowColumn : diagonal;
+    return diagonal != 0 ? diagonal : rowColumn;
   }
 
   void addMove(int row, int column, int player) => board[row][column] != 0 ? throw FormatException('Place already used.') : board[row][column] = player;
+  void removeMove(int row, int column) => board[row][column] == 0 ? throw FormatException('Place not used.') : board[row][column] = 0;
 
 
   String spaceAdd(String string) => string + ' ';
