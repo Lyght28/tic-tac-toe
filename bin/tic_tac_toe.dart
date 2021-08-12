@@ -15,5 +15,6 @@ void main(List<String> arguments) {
   }
   print(board);
   player1.printResult(board);
+   
   //TODO Had the possibility to play against computer or player and to play first or second
 }

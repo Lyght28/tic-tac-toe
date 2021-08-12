@@ -5,33 +5,47 @@ import 'package:tic_tac_toe/board.dart';
 class Interface {
 
   int player;
-  Interface(this.player);
+  int lengthBoard;
+  Interface(this.player, [this.lengthBoard = 3]);
 
-  bool verifRangeUserInput(int userInput) => (1 <= userInput && userInput <= 3) ? true : false;
+  //verify that the user input is well between 1 and the length of the board
+  bool verifyRangeUserInput(int userInput) => (1 <= userInput && userInput <= lengthBoard) ? true : false;
 
+  //verify that the user input is well an int
+  bool verifyTypeIntUserInput(String userInput) {
+    try {
+      int.parse(userInput);
+      return true;
+    } on FormatException {
+      return false;
+    }
+  }
+
+  //get and verify the move of the user
   int parseVerifyUserInput(String toPrint) {
-    stdout.write(toPrint + ': ');
+    stdout.write(toPrint[0].toUpperCase()+toPrint.substring(1) + ': '); //Capitalize the first letter
     String? answerString = stdin.readLineSync();
     answerString = answerString ?? '';
-    int answerInt;
-    try {
-      answerInt = int.parse(answerString);
-    } on FormatException {
+    int answerInt = 0;
+    if (!verifyTypeIntUserInput(answerString)){
       print('Incorrect input, please try again.');
       return parseVerifyUserInput(toPrint);
     }
-    if (!(1 <= answerInt && answerInt <= 3)) {
-      print('Input should be between 1 and 3, please try again.');
+    else
+      answerInt = int.parse(answerString);
+    if (!verifyRangeUserInput(answerInt)) {
+      print('Input should be between 1 and $lengthBoard, please try again.');
       return parseVerifyUserInput(toPrint);
     } else
       return answerInt;
   }
 
+  //return a list which contain in first position the row and the column in second
   List<int> getUserInput() {
     List<int> answers = [];
     print('Where do you want to play ?');
-    answers.add(parseVerifyUserInput('Row'));
-    answers.add(parseVerifyUserInput('Column'));
+    answers.add(parseVerifyUserInput('row'));
+    answers.add(parseVerifyUserInput('column'));
     return answers;
   }
 
@@ -45,6 +59,7 @@ class Interface {
           'Try to win ;)');
   }
 
+  //update the board according to the user choice
   void makeMove(Board board) {
     List<int> userInput = getUserInput();
     try {
@@ -55,20 +70,22 @@ class Interface {
     }
   }
 
+  //a turn for a player (it return if the game is ended or not)
   bool turn(Board board) {
     print(board);
     makeMove(board);
     return board.checkBoard() == 0 ? true : false;
   }
-
+  //print whether this interface player has win or not
   void printResult(Board board) {
-    //TODO change this print system to show whether this interface player has win or not
-    switch (board.checkBoard()) {
+    int result = board.checkBoard();
+    switch (result) {
       case 1:
-        print('GG, the X player win.');
-        break;
       case 2:
-        print('GG, the O player win.');
+        if (result == player)
+          print('GG you have win with the ${board.symbols[result]}.');
+        else
+          print("Oh no, you've lost against the ${board.symbols[result]}.");
         break;
       case -1:
       default:

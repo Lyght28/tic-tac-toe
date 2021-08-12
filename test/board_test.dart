@@ -9,14 +9,14 @@ void main() {
 
   group('check board', () {
     test('check rows columns board', () {
-      expect(emptyBoard.checkRowsColums(), equals(0));
-      expect(Board([[1,0,1], [0,1,2], [2,0,2]]).checkRowsColums(), equals(0));
+      expect(emptyBoard.checkRowsColumns(), equals(0));
+      expect(Board([[1,0,1], [0,1,2], [2,0,2]]).checkRowsColumns(), equals(0));
 
-      expect(Board([[1,1,1], [0,2,0], [2,0,2]]).checkRowsColums(), equals(1));
-      expect(Board([[1,0,1], [1,2,2], [1,0,2]]).checkRowsColums(), equals(1));
+      expect(Board([[1,1,1], [0,2,0], [2,0,2]]).checkRowsColumns(), equals(1));
+      expect(Board([[1,0,1], [1,2,2], [1,0,2]]).checkRowsColumns(), equals(1));
 
-      expect(Board([[1,2,1], [0,2,0], [1,2,1]]).checkRowsColums(), equals(2));
-      expect(Board([[1,0,1], [0,1,0], [2,2,2]]).checkRowsColums(), equals(2));
+      expect(Board([[1,2,1], [0,2,0], [1,2,1]]).checkRowsColumns(), equals(2));
+      expect(Board([[1,0,1], [0,1,0], [2,2,2]]).checkRowsColumns(), equals(2));
     });
 
     test('check diagonals board', () {
